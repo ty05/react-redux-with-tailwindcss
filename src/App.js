@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import Nav from './component/Nav';
+import CartMain from './component/CartMain';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { calculateByAmount } from './features/Cart/cartSlice';
+import Modal from './component/Modal';
+import { check } from './features/modals/modalSlice';
+
 
 function App() {
+  const dispatch = useDispatch()
+  const { items } = useSelector((state) => state.cart)
+  const { modalOpen } = useSelector((state) => state.modal)
+
+  useEffect(() => {
+    dispatch(calculateByAmount())
+  },[items])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+       { modalOpen && <Modal />}
+       <Nav />
+       <CartMain />
     </div>
   );
 }
+
 
 export default App;
